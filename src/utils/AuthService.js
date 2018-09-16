@@ -31,15 +31,14 @@ export function login() {
 
 // logout
 export function logout() {
-  // clearIdToken();
-  // clearProfile();
+  clearIdToken();
+  clearProfile();
   localStorage.removeItem('access_token');
   localStorage.removeItem('id_token');
   localStorage.removeItem('expires_at');
   // navigate to the home route
   history.replace('/');
 };
-
 
 export function requireAuth(nextState, replace) {
   if (!isLoggedIn()) {
@@ -51,14 +50,14 @@ export function getIdToken() {
   return localStorage.getItem(ID_TOKEN_KEY);
 };
 
-// function clearIdToken() {
-//   localStorage.removeItem(ID_TOKEN_KEY);
-// };
+function clearIdToken() {
+  localStorage.removeItem(ID_TOKEN_KEY);
+};
 
-// function clearProfile() {
-//   localStorage.removeItem('profile');
-//   localStorage.removeItem('userId');
-// };
+function clearProfile() {
+  localStorage.removeItem('profile');
+  localStorage.removeItem('userId');
+};
 
 // Helper function that will allow us to extract the id_token
 export function getAndStoreParameters() {
@@ -94,10 +93,8 @@ function setIdToken(authResult) {
 };
 
 export function isLoggedIn() {
-  // const idToken = getIdToken();
-  // return !!idToken && !isTokenExpired(idToken);
-  let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
+  const idToken = getIdToken();
+  return !!idToken && !isTokenExpired(idToken);
 };
 
 export function getProfile() {
@@ -105,17 +102,15 @@ export function getProfile() {
    return decoded;
 };
 
-// function getTokenExpirationDate(encodedToken) {
-//   const token = decode(encodedToken);
-//   if (!token.exp) { return null; }
+function getTokenExpirationDate(encodedToken) {
+  const token = decode(encodedToken);
+  if (!token.exp) { return null; }
+  const date = new Date(0);
+  date.setUTCSeconds(token.exp);
+  return date;
+};
 
-//   const date = new Date(0);
-//   date.setUTCSeconds(token.exp);
-
-//   return date;
-// };
-
-// function isTokenExpired(token) {
-//   const expirationDate = getTokenExpirationDate(token);
-//   return expirationDate < new Date();
-// };
+function isTokenExpired(token) {
+  const expirationDate = getTokenExpirationDate(token);
+  return expirationDate < new Date();
+};

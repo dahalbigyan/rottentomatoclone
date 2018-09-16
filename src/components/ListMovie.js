@@ -3,7 +3,6 @@ import DisplayMovie from './DisplayMovie';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import Nav from './Nav';
-import { withRouter, Redirect } from 'react-router-dom';
 
 class ListMovie extends React.Component {
   constructor(props){
@@ -40,7 +39,7 @@ const FeedQuery = gql`query allMovies {
   }
 }`; 
 
-const userQueryy = gql` query allUsers{
+const userPreQueryy = gql` query allUsers{
   allUsers(filter:{auth0UserId:"auth0|5a982a9ac3a11c288a2f5b15"}){
     id
   }
@@ -49,7 +48,7 @@ const userQueryy = gql` query allUsers{
 
 const movieQuery = graphql(FeedQuery); 
 
-const userQuery = graphql(userQueryy);
+const userQuery = graphql(userPreQueryy);
 
 const ListMovieWithData = compose(userQuery, movieQuery)(ListMovie);
 

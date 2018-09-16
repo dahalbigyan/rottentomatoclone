@@ -13,8 +13,6 @@ class Callback extends Component{
     }
   componentWillMount() {
     getAndStoreParameters();
-    // this.createUser();
-    // this.queryUser();
   };
 
   render() {
@@ -25,7 +23,6 @@ class Callback extends Component{
     const variables = {
       auth0UserId: getUserAuthId()
     };
-    console.log(getUserAuthId());
     this.props.queryAUser({variables})
         .then((response)=>{
           localStorage.setItem('userId', response.data.createUser.id);
